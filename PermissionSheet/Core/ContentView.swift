@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @Environment(\.openURL) private var openURL
     @State private var permission: [Permission] = Permission.allCases
     
     var body: some View {
@@ -24,6 +25,16 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Permission Sheet")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Image(systemName: "gear")
+                        .onTapGesture {
+                            if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                                openURL(appSettings)
+                            }
+                        }
+                }
+            }
         }
         .permissionSheet([.location, .camera, .microphone, .photoLibrary])
     }
